@@ -17,7 +17,10 @@ def get_patient(
     id: int,
     db: Session = Depends(get_db),
 ):
-    pass
+    patient = db.query(Patient).filter(Patient.id == id).first()
+    if patient is None:
+        raise HTTPException(status_code=404, detail="Patient not found")
+    return patient
 
 
 @router.post("", response_model=PatientResponse, status_code=201)
