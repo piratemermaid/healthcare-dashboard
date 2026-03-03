@@ -1,4 +1,6 @@
-import { createRootRoute, Link, Outlet } from '@tanstack/react-router';
+import { createRootRoute, Outlet } from '@tanstack/react-router';
+
+import { SideBarLayout } from '~/components';
 
 export const rootRoute = createRootRoute({
   component: RootLayout,
@@ -7,11 +9,8 @@ export const rootRoute = createRootRoute({
 
 function RootLayout() {
   return (
-    <>
-      <nav style={{ display: 'flex', gap: '1rem', padding: '1rem' }}>
-        <Link to="/">Home</Link>
-      </nav>
+    <SideBarLayout>
       <Outlet />
-    </>
+    </SideBarLayout>
   );
 }

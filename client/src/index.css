@@ -8,3 +8,8 @@ body {
   font-family: system-ui, sans-serif;
   min-height: 100vh;
 }
+
+a {
+  text-decoration: none;
+  color: inherit;
+}

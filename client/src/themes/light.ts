@@ -65,6 +65,7 @@ export const lightTheme = createTheme({
   },
   typography: {
     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    h6: { fontWeight: 'medium', letterSpacing: 1 },
   },
   shape: {
     borderRadius: 4,
