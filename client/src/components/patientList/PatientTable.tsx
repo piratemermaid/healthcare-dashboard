@@ -1,4 +1,9 @@
-import { DataGrid, type GridColDef } from '@mui/x-data-grid';
+import { useNavigate } from '@tanstack/react-router';
+import {
+  DataGrid,
+  type GridColDef,
+  type GridRowParams,
+} from '@mui/x-data-grid';
 
 import { PatientStatusChip } from '.';
 import { formatDate, getFullName, getPatientAge } from '~/utils';
@@ -9,6 +14,12 @@ type PatientTableProps = {
 };
 
 export const PatientTable = ({ patients }: PatientTableProps) => {
+  const navigate = useNavigate();
+
+  const onRowClick = (params: GridRowParams) => {
+    navigate({ to: '/patients/$id', params: { id: params.id.toString() } });
+  };
+
   const columns: GridColDef[] = [
     { field: 'name', headerName: 'Name', width: 200 },
     { field: 'age', headerName: 'Age' },
@@ -39,6 +50,12 @@ export const PatientTable = ({ patients }: PatientTableProps) => {
       columns={columns}
       initialState={{ pagination: { paginationModel: { pageSize: 15 } } }}
       pageSizeOptions={[15, 25, 50]}
+      onRowClick={onRowClick}
+      sx={{
+        '& .MuiDataGrid-row:hover': {
+          cursor: 'pointer',
+        },
+      }}
     />
   );
 };
