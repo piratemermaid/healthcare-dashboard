@@ -1,23 +1,44 @@
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, type GridColDef } from '@mui/x-data-grid';
 
-export const PatientTable = () => {
-  const patients = [
-    { id: 1, first_name: 'John', last_name: 'Doe' },
-    { id: 2, first_name: 'Jane', last_name: 'Smith' },
-    { id: 3, first_name: 'Jim', last_name: 'Beam' },
+import { PatientStatusChip } from '.';
+import { formatDate, getFullName, getPatientAge } from '~/utils';
+import type { Patient, PatientStatus } from '~/types';
+
+type PatientTableProps = {
+  patients: Patient[];
+};
+
+export const PatientTable = ({ patients }: PatientTableProps) => {
+  const columns: GridColDef[] = [
+    { field: 'name', headerName: 'Name', width: 200 },
+    { field: 'age', headerName: 'Age' },
+    { field: 'last_visit', headerName: 'Last visit' },
+    {
+      field: 'status',
+      headerName: 'Status',
+      width: 120,
+      renderCell: (params) => (
+        <PatientStatusChip status={params.value as PatientStatus} />
+      ),
+    },
   ];
 
-  const columns = [
-    { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'first_name', headerName: 'First name', width: 130 },
-    { field: 'last_name', headerName: 'Last name', width: 130 },
-  ];
+  const rows = patients.map((patient) => ({
+    id: patient.id,
+    name: getFullName(patient.first_name, patient.last_name),
+    age: getPatientAge(patient.date_of_birth),
+    last_visit: patient.last_visit
+      ? formatDate(patient.last_visit, 'MM/dd/yyyy')
+      : 'no visits',
+    status: patient.status,
+  }));
 
   return (
     <DataGrid
-      rows={patients}
+      rows={rows}
       columns={columns}
-      pageSizeOptions={[10, 25, 50]}
+      initialState={{ pagination: { paginationModel: { pageSize: 15 } } }}
+      pageSizeOptions={[15, 25, 50]}
     />
   );
 };

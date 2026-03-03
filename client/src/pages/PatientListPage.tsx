@@ -1,5 +1,16 @@
-import { PatientTable } from '~/components';
+import { ErrorMessage, Loader, PatientTable } from '~/components';
+import { usePatients } from '~/hooks';
 
 export function PatientListPage() {
-  return <PatientTable />;
+  const { data: patients, isLoading, error } = usePatients();
+
+  if (error) {
+    return <ErrorMessage message={error.message} />;
+  }
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  return <PatientTable patients={patients} />;
 }
