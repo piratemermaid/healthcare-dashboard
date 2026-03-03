@@ -7,5 +7,16 @@
 2. Create vite app
 
 3. Set up basic app stuff (linting, prettier, etc.)
-
    - For this I use a very simple webapp that I created: https://new-app-guide.vercel.app/ - I tend to do a lot of little projects so I made this little site so I can set up new apps quickly.
+
+## Tools
+
+<b>Component library:</b> Material UI
+
+<b>Routing:</b> Tanstack Router
+
+<b>Asynchronous state:</b> Tanstack Query
+
+<b>Patient table with filtering & sorting:</b> MUI X Data Grid
+
+<b>:</b>

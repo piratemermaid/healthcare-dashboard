@@ -1,7 +1,5 @@
+import { PatientTable } from '~/components';
+
 export function PatientListPage() {
-  return (
-    <div>
-      <h1>Patient List</h1>
-    </div>
-  );
+  return <PatientTable />;
 }
