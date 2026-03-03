@@ -1,4 +1,5 @@
-# services:
-#   api:
-#   web:
-#   postgres:
+services:
+  api:
+    build: ./server
+    ports:
+      - "8000:8000"
