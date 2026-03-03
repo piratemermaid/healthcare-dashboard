@@ -1,13 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 
-export const usePatients = () => {
+export const usePatientList = () => {
   return useQuery({
     queryKey: ['patients'],
-    queryFn: () => fetchPatients(),
+    queryFn: () => fetchPatientList(),
   });
 };
 
-async function fetchPatients() {
+async function fetchPatientList() {
   const response = await fetch(`${import.meta.env.VITE_API_URL}/patients`);
   return response.json();
 }

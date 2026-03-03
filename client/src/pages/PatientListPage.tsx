@@ -1,8 +1,8 @@
 import { ErrorMessage, Loader, PatientTable } from '~/components';
-import { usePatients } from '~/hooks';
+import { usePatientList } from '~/hooks';
 
 export function PatientListPage() {
-  const { data: patients, isLoading, error } = usePatients();
+  const { data: patients, isLoading, error } = usePatientList();
 
   if (error) {
     return <ErrorMessage message={error.message} />;
