@@ -2,7 +2,7 @@ import { AppBar, IconButton, Stack, Toolbar, Typography } from '@mui/material';
 import { Menu as MenuIcon } from '@mui/icons-material';
 
 import { NavLink } from '.';
-import { ROUTES } from '~/routes/routes';
+import { NAV_ROUTES } from '~/routes/routes';
 
 type NavBarProps = {
   onMenuClick?: () => void;
@@ -31,7 +31,7 @@ export const NavBar = ({ onMenuClick }: NavBarProps) => {
         >
           <Typography variant="h6">Healthcare Dashboard</Typography>
           <Stack direction="row" spacing={2}>
-            {ROUTES.map((route) => (
+            {NAV_ROUTES.map((route) => (
               <NavLink key={route.path} path={route.path} label={route.label} />
             ))}
           </Stack>

@@ -1,10 +1,11 @@
 import { createRootRoute, Outlet } from '@tanstack/react-router';
 
 import { SideBarLayout } from '~/components';
+import { NotFoundPage } from '~/pages';
 
 export const rootRoute = createRootRoute({
   component: RootLayout,
-  notFoundComponent: () => <div>404 - Page not found</div>,
+  notFoundComponent: NotFoundPage,
 });
 
 function RootLayout() {
