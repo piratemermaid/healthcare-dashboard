@@ -27,3 +27,4 @@ Things I would implement if I continued with this project:
 
 - Nice search bar so user can easily search and not have to click in to datatable filters
 - Persist selected table filters in localstorage so user doesn't have to re-select going back to the table page
+- DRY python code (like getting patient + error handling)
