@@ -7,13 +7,23 @@ import {
 
 import { PatientStatusChip } from '.';
 import { formatDate, getFullName, getPatientAge } from '~/utils';
-import type { Patient, PatientStatus } from '~/types';
+import type { Patient, PatientStatus, PaginationModel } from '~/types';
 
 type PatientTableProps = {
   patients: Patient[];
+  total: number;
+  loading?: boolean;
+  paginationModel: PaginationModel;
+  onPaginationModelChange: (model: PaginationModel) => void;
 };
 
-export const PatientTable = ({ patients }: PatientTableProps) => {
+export const PatientTable = ({
+  patients,
+  total,
+  loading,
+  paginationModel,
+  onPaginationModelChange,
+}: PatientTableProps) => {
   const navigate = useNavigate();
 
   const onRowClick = (params: GridRowParams) => {
@@ -48,7 +58,11 @@ export const PatientTable = ({ patients }: PatientTableProps) => {
     <DataGrid
       rows={rows}
       columns={columns}
-      initialState={{ pagination: { paginationModel: { pageSize: 15 } } }}
+      loading={loading}
+      paginationMode="server"
+      rowCount={total}
+      paginationModel={paginationModel}
+      onPaginationModelChange={onPaginationModelChange}
       pageSizeOptions={[15, 25, 50]}
       onRowClick={onRowClick}
       sx={{

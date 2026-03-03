@@ -27,3 +27,8 @@ class PatientResponse(PatientBase):
 
     class Config:
         from_attributes = True
+
+
+class PatientListResponse(BaseModel):
+    items: list[PatientResponse]
+    total: int

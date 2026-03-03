@@ -1,17 +1,29 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from app.db.database import get_db
 from app.db.models import Patient
-from app.schemas.patient import PatientCreate, PatientResponse, PatientUpdate
+from app.schemas.patient import (
+    PatientCreate,
+    PatientListResponse,
+    PatientResponse,
+    PatientUpdate,
+)
 
 router = APIRouter(prefix="/patients", tags=["patients"])
 
 
-@router.get("", response_model=list[PatientResponse])
-def list_patients(db: Session = Depends(get_db)):
-    patients = db.query(Patient).all()
-    return patients
+@router.get("", response_model=PatientListResponse)
+def list_patients(
+    db: Session = Depends(get_db),
+    page: int = Query(1, ge=1),
+    page_size: int = Query(15, ge=1, le=100),
+):
+    offset = (page - 1) * page_size
+    total = db.query(func.count(Patient.id)).scalar()
+    items = db.query(Patient).order_by(Patient.id).offset(offset).limit(page_size).all()
+    return PatientListResponse(items=items, total=total)
 
 
 @router.get("/{id}", response_model=PatientResponse)

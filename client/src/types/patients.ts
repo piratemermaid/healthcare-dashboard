@@ -8,3 +8,8 @@ export interface Patient {
   last_visit: Date | null;
   status: PatientStatus;
 }
+
+export interface PatientListResponse {
+  items: Patient[];
+  total: number;
+}
