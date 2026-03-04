@@ -151,26 +151,46 @@ export const EditPatientDialog = ({
               <Controller
                 name="first_name"
                 control={control}
-                render={({ field }) => (
-                  <TextField {...field} label="First Name" fullWidth />
+                rules={{ required: 'First name is required' }}
+                render={({ field, fieldState }) => (
+                  <TextField
+                    {...field}
+                    label="First Name"
+                    fullWidth
+                    required
+                    error={!!fieldState.error}
+                    helperText={fieldState.error?.message}
+                  />
                 )}
               />
               <Controller
                 name="last_name"
                 control={control}
-                render={({ field }) => (
-                  <TextField {...field} label="Last Name" fullWidth />
+                rules={{ required: 'Last name is required' }}
+                render={({ field, fieldState }) => (
+                  <TextField
+                    {...field}
+                    label="Last Name"
+                    fullWidth
+                    required
+                    error={!!fieldState.error}
+                    helperText={fieldState.error?.message}
+                  />
                 )}
               />
               <Controller
                 name="date_of_birth"
                 control={control}
-                render={({ field }) => (
+                rules={{ required: 'Date of birth is required' }}
+                render={({ field, fieldState }) => (
                   <TextField
                     {...field}
                     label="Date of Birth"
                     type="date"
                     fullWidth
+                    required
+                    error={!!fieldState.error}
+                    helperText={fieldState.error?.message}
                     InputLabelProps={{ shrink: true }}
                   />
                 )}
@@ -178,12 +198,16 @@ export const EditPatientDialog = ({
               <Controller
                 name="last_visit"
                 control={control}
-                render={({ field }) => (
+                rules={{ required: 'Last visit is required' }}
+                render={({ field, fieldState }) => (
                   <TextField
                     {...field}
                     label="Last Visit"
                     type="date"
                     fullWidth
+                    required
+                    error={!!fieldState.error}
+                    helperText={fieldState.error?.message}
                     InputLabelProps={{ shrink: true }}
                   />
                 )}
@@ -225,8 +249,16 @@ export const EditPatientDialog = ({
               <Controller
                 name="address1"
                 control={control}
-                render={({ field }) => (
-                  <TextField {...field} label="Address line 1" fullWidth />
+                rules={{ required: 'Address line 1 is required' }}
+                render={({ field, fieldState }) => (
+                  <TextField
+                    {...field}
+                    label="Address line 1"
+                    fullWidth
+                    required
+                    error={!!fieldState.error}
+                    helperText={fieldState.error?.message}
+                  />
                 )}
               />
               <Controller
@@ -240,22 +272,53 @@ export const EditPatientDialog = ({
                 <Controller
                   name="city"
                   control={control}
-                  render={({ field }) => (
-                    <TextField {...field} label="City" fullWidth />
+                  rules={{ required: 'City is required' }}
+                  render={({ field, fieldState }) => (
+                    <TextField
+                      {...field}
+                      label="City"
+                      fullWidth
+                      required
+                      error={!!fieldState.error}
+                      helperText={fieldState.error?.message}
+                    />
                   )}
                 />
                 <Controller
                   name="state"
                   control={control}
-                  render={({ field }) => (
-                    <TextField {...field} label="State" fullWidth />
+                  rules={{ required: 'State is required' }}
+                  render={({ field, fieldState }) => (
+                    <TextField
+                      {...field}
+                      label="State"
+                      fullWidth
+                      required
+                      error={!!fieldState.error}
+                      helperText={fieldState.error?.message}
+                    />
                   )}
                 />
                 <Controller
                   name="zip_code"
                   control={control}
-                  render={({ field }) => (
-                    <TextField {...field} label="ZIP" fullWidth />
+                  rules={{
+                    required: 'ZIP is required',
+                    pattern: {
+                      value: /^\d{5}$/,
+                      message: 'ZIP must be 5 digits',
+                    },
+                  }}
+                  render={({ field, fieldState }) => (
+                    <TextField
+                      {...field}
+                      label="ZIP"
+                      fullWidth
+                      required
+                      error={!!fieldState.error}
+                      helperText={fieldState.error?.message}
+                      inputProps={{ maxLength: 5 }}
+                    />
                   )}
                 />
               </Stack>
