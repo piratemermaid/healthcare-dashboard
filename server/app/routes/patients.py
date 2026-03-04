@@ -46,10 +46,7 @@ def get_patient_summary(
         .order_by(PatientNoteModel.created_at)
         .all()
     )
-    note_tuples = [
-        (n.content, n.created_at.strftime("%Y-%m-%d %H:%M"))
-        for n in notes
-    ]
+    note_tuples = [(n.content, n.created_at) for n in notes]
     return build_patient_summary(patient=patient, notes=note_tuples)
 
 
