@@ -10,10 +10,8 @@ import {
   AddNoteButton,
   AddNoteDialog,
 } from '~/components';
-import { usePatient, usePatientNotes } from '~/hooks';
+import { usePatient, usePatientNotes, useAddPatientNote } from '~/hooks';
 import { formatDate, getFullName } from '~/utils';
-import type { PatientNote } from '~/types';
-import { useAddPatientNote } from '~/hooks/patients/useAddPatientNote';
 
 export function PatientPage() {
   const [addNoteDialogOpen, setAddNoteDialogOpen] = useState(false);
