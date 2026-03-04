@@ -1,8 +1,4 @@
-import { differenceInYears, format, isValid } from 'date-fns';
-
-export const getPatientAge = (dateOfBirth: string | Date): number => {
-  return differenceInYears(new Date(), new Date(dateOfBirth));
-};
+import { format, isValid } from 'date-fns';
 
 export const formatDate = (
   dateString: string | Date,

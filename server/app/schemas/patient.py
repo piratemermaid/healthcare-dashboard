@@ -1,5 +1,6 @@
 from datetime import date, datetime
-from pydantic import BaseModel
+
+from pydantic import BaseModel, computed_field
 
 
 class PatientBase(BaseModel):
@@ -25,6 +26,18 @@ class PatientUpdate(BaseModel):
 class PatientResponse(PatientBase):
     id: int
 
+    @computed_field
+    @property
+    def age(self) -> int:
+        today = date.today()
+        age = today.year - self.date_of_birth.year
+        if (today.month, today.day) < (
+            self.date_of_birth.month,
+            self.date_of_birth.day,
+        ):
+            age -= 1
+        return age
+
     class Config:
         from_attributes = True
 
@@ -49,3 +62,9 @@ class PatientNoteCreate(BaseModel):
 
 class PatientNoteListResponse(BaseModel):
     items: list[PatientNote]
+
+
+class PatientSummaryResponse(BaseModel):
+    identifiers: dict  # name, age, blood_type (when available)
+    clinical: dict  # conditions, allergies (when available)
+    narrative: str

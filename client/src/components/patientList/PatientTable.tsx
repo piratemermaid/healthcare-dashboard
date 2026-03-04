@@ -6,7 +6,7 @@ import {
 } from '@mui/x-data-grid';
 
 import { PatientStatusChip } from '.';
-import { formatDate, getFullName, getPatientAge } from '~/utils';
+import { formatDate, getFullName } from '~/utils';
 import type { Patient, PatientStatus, PaginationModel } from '~/types';
 
 type PatientTableProps = {
@@ -47,7 +47,7 @@ export const PatientTable = ({
   const rows = patients.map((patient) => ({
     id: patient.id,
     name: getFullName(patient.first_name, patient.last_name),
-    age: getPatientAge(patient.date_of_birth),
+    age: patient.age,
     last_visit: patient.last_visit
       ? formatDate(patient.last_visit, 'MM/dd/yyyy')
       : 'no visits',

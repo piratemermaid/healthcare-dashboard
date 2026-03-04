@@ -5,6 +5,7 @@ export interface Patient {
   first_name: string;
   last_name: string;
   date_of_birth: string;
+  age: number;
   last_visit: Date | null;
   status: PatientStatus;
 }

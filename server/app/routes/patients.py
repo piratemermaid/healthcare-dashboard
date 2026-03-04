@@ -11,8 +11,10 @@ from app.schemas.patient import (
     PatientNoteCreate,
     PatientNoteListResponse,
     PatientResponse,
+    PatientSummaryResponse,
     PatientUpdate,
 )
+from app.services.summary import build_patient_summary
 
 router = APIRouter(prefix="/patients", tags=["patients"])
 
@@ -28,6 +30,33 @@ def list_patients(
     items = db.query(Patient).order_by(Patient.id).offset(offset).limit(page_size).all()
     
     return PatientListResponse(items=items, total=total)
+
+
+@router.get("/{id}/summary", response_model=PatientSummaryResponse)
+def get_patient_summary(
+    id: int,
+    db: Session = Depends(get_db),
+):
+    patient = db.query(Patient).filter(Patient.id == id).first()
+    if patient is None:
+        raise HTTPException(status_code=404, detail="Patient not found")
+    notes = (
+        db.query(PatientNoteModel)
+        .filter(PatientNoteModel.patient_id == id)
+        .order_by(PatientNoteModel.created_at)
+        .all()
+    )
+    note_tuples = [
+        (n.content, n.created_at.strftime("%Y-%m-%d %H:%M"))
+        for n in notes
+    ]
+    return build_patient_summary(
+        first_name=patient.first_name,
+        last_name=patient.last_name,
+        date_of_birth=patient.date_of_birth,
+        status=patient.status,
+        notes=note_tuples,
+    )
 
 
 @router.get("/{id}", response_model=PatientResponse)

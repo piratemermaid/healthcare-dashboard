@@ -3,7 +3,7 @@ import { useParams } from '@tanstack/react-router';
 
 import { ErrorMessage, Loader, PatientStatusChip } from '~/components';
 import { usePatient } from '~/hooks';
-import { formatDate, getFullName, getPatientAge } from '~/utils';
+import { formatDate, getFullName } from '~/utils';
 
 export function PatientPage() {
   const { id } = useParams({ from: '/patients/$id' });
@@ -25,7 +25,7 @@ export function PatientPage() {
       </Typography>
       <Stack>
         <Typography variant="body1">
-          Age: {getPatientAge(patient.date_of_birth)}
+          Age: {patient.age}
         </Typography>
         <Typography variant="body1">
           Last visit: {formatDate(patient.last_visit, 'MM/dd/yyyy')}
