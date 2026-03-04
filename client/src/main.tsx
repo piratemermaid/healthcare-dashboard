@@ -7,7 +7,7 @@ import { CssBaseline } from '@mui/material';
 import { RouterProvider } from '@tanstack/react-router';
 
 import { router } from './router';
-import { lightTheme } from '~/themes/light';
+import { theme } from '~/themes/';
 import './index.css';
 
 const queryClient = new QueryClient();
@@ -15,7 +15,7 @@ const queryClient = new QueryClient();
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={lightTheme}>
+      <ThemeProvider theme={theme} defaultMode="light">
         <RouterProvider router={router} />
         <CssBaseline />
       </ThemeProvider>

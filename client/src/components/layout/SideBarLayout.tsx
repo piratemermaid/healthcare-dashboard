@@ -13,6 +13,8 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Switch,
+  useColorScheme,
 } from '@mui/material';
 import {
   Inbox as MailIcon,
@@ -30,6 +32,8 @@ type SideBarLayoutProps = {
 export const SideBarLayout = ({ children }: SideBarLayoutProps) => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
+
+  const { mode, setMode } = useColorScheme();
 
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -50,7 +54,7 @@ export const SideBarLayout = ({ children }: SideBarLayoutProps) => {
     <div>
       <Divider />
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+        {['Account', 'Inbox'].map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton>
               <ListItemIcon>
@@ -63,7 +67,7 @@ export const SideBarLayout = ({ children }: SideBarLayoutProps) => {
       </List>
       <Divider />
       <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
+        {['Settings'].map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton>
               <ListItemIcon>
@@ -73,6 +77,13 @@ export const SideBarLayout = ({ children }: SideBarLayoutProps) => {
             </ListItemButton>
           </ListItem>
         ))}
+        <ListItem>
+          <Switch
+            checked={mode === 'dark'}
+            onChange={() => setMode(mode === 'dark' ? 'light' : 'dark')}
+          />
+          <ListItemText primary="Dark Mode" />
+        </ListItem>
       </List>
     </div>
   );
