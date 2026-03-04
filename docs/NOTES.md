@@ -25,8 +25,10 @@
 
 Things I would implement if I continued with this project:
 
+- LLM for summaries - I prioritized core features and stability within the time limit
 - Nice search bar so user can easily search and not have to click in to datatable filters
 - Persist selected table filters in localstorage so user doesn't have to re-select going back to the table page
+- Persist user dark mode selection
 - DRY python code (like getting patient + error handling)
 - Fix form labels getting cut off at top of dialogs
 - More/better error handling (including toast messages) + form validation
