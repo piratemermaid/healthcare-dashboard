@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 from pydantic import BaseModel
 
 
@@ -32,3 +32,20 @@ class PatientResponse(PatientBase):
 class PatientListResponse(BaseModel):
     items: list[PatientResponse]
     total: int
+
+
+class PatientNote(BaseModel):
+    id: int
+    content: str
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class PatientNoteCreate(BaseModel):
+    content: str
+
+
+class PatientNoteListResponse(BaseModel):
+    items: list[PatientNote]
