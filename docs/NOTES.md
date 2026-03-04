@@ -30,3 +30,4 @@ Things I would implement if I continued with this project:
 - DRY python code (like getting patient + error handling)
 - Fix form labels getting cut off at top of dialogs
 - More/better error handling (including toast messages) + form validation
+- Husky pre-commit linting
