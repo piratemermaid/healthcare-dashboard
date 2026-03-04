@@ -18,6 +18,7 @@ import {
   usePatientNotes,
   useAddPatientNote,
   usePatientSummary,
+  useUpdatePatient,
 } from '~/hooks';
 import { formatDate, getFullName } from '~/utils';
 
@@ -48,6 +49,17 @@ export function PatientPage() {
     isPending: isAddingNote,
     error: addNoteError,
   } = useAddPatientNote(id);
+  const {
+    mutate: updatePatient,
+    isPending: isUpdating,
+    error: updateError,
+    reset: resetUpdate,
+  } = useUpdatePatient(id);
+
+  const handleCloseEditDialog = () => {
+    setEditPatientDialogOpen(false);
+    resetUpdate();
+  };
 
   const handleAddNote = (content: string) => {
     addNote(
@@ -136,10 +148,13 @@ export function PatientPage() {
 
       <EditPatientDialog
         open={editPatientDialogOpen}
-        onClose={() => setEditPatientDialogOpen(false)}
+        onClose={handleCloseEditDialog}
         patient={patient}
-        isLoading={false}
-        error=""
+        onSubmit={(data) =>
+          updatePatient(data, { onSuccess: handleCloseEditDialog })
+        }
+        isSubmitting={isUpdating}
+        error={updateError?.message}
       />
     </>
   );

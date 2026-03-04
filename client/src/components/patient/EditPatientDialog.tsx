@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import {
   Dialog,
@@ -17,8 +17,8 @@ import {
 
 import { AddableTextFieldList, ErrorMessage } from '~/components';
 import { STATUS_OPTIONS } from '~/constants';
-import { useUpdatePatient } from '~/hooks';
 import type { Patient, PatientStatus } from '~/types';
+import type { PatientCreatePayload } from '~/hooks';
 
 type EditPatientFormValues = {
   first_name: string;
@@ -38,14 +38,6 @@ type EditPatientFormValues = {
   conditions: { value: string }[];
   blood_type: string;
   status: PatientStatus;
-};
-
-type EditPatientDialogProps = {
-  open: boolean;
-  onClose: () => void;
-  patient?: Patient | null;
-  isLoading: boolean;
-  error: string;
 };
 
 const defaultFormValues: EditPatientFormValues = {
@@ -68,80 +60,82 @@ const defaultFormValues: EditPatientFormValues = {
   status: 'active',
 };
 
+type EditPatientDialogProps = {
+  open: boolean;
+  onClose: () => void;
+  patient?: Patient | null;
+  onSubmit: (data: PatientCreatePayload) => void;
+  isSubmitting: boolean;
+  error?: string | null;
+};
+
 export const EditPatientDialog = ({
   open,
   onClose,
   patient,
-  isLoading,
+  onSubmit: onSubmitProp,
+  isSubmitting,
   error,
 }: EditPatientDialogProps) => {
   const { control, handleSubmit, reset } = useForm<EditPatientFormValues>({
     defaultValues: defaultFormValues,
   });
 
-  const [dialogError, setDialogError] = useState(error ?? '');
-
-  const { mutate: updatePatient, isPending: isUpdating } = useUpdatePatient(
-    patient?.id?.toString() ?? ''
-  );
+  const isAddMode = !patient?.id;
 
   const handleClose = () => {
-    setDialogError(error ?? '');
     reset(defaultFormValues);
     onClose();
   };
 
   useEffect(() => {
-    if (open && patient) {
-      reset({
-        ...defaultFormValues,
-        first_name: patient.first_name,
-        last_name: patient.last_name,
-        date_of_birth: String(patient.date_of_birth).slice(0, 10),
-        last_visit: patient.last_visit
-          ? String(patient.last_visit).slice(0, 10)
-          : '',
-        home_phone: '',
-        cell_phone: '',
-        work_phone: '',
-        email: '',
-        address1: '',
-        address2: '',
-        city: '',
-        state: '',
-        zip_code: '',
-        blood_type: patient.blood_type ?? '',
-        allergies: (patient.allergies ?? []).map((v) => ({ value: v })),
-        conditions: (patient.conditions ?? []).map((v) => ({ value: v })),
-        status: patient.status,
-      });
+    if (open) {
+      if (patient) {
+        reset({
+          ...defaultFormValues,
+          first_name: patient.first_name,
+          last_name: patient.last_name,
+          date_of_birth: String(patient.date_of_birth).slice(0, 10),
+          last_visit: patient.last_visit
+            ? String(patient.last_visit).slice(0, 10)
+            : '',
+          home_phone: '',
+          cell_phone: '',
+          work_phone: '',
+          email: '',
+          address1: '',
+          address2: '',
+          city: '',
+          state: '',
+          zip_code: '',
+          blood_type: patient.blood_type ?? '',
+          allergies: (patient.allergies ?? []).map((v) => ({ value: v })),
+          conditions: (patient.conditions ?? []).map((v) => ({ value: v })),
+          status: patient.status,
+        });
+      } else {
+        reset(defaultFormValues);
+      }
     }
   }, [open, patient, reset]);
 
   const onSubmit = (data: EditPatientFormValues) => {
-    if (!patient?.id) return;
-    updatePatient(
-      {
-        first_name: data.first_name,
-        last_name: data.last_name,
-        date_of_birth: data.date_of_birth,
-        last_visit: data.last_visit || null,
-        blood_type: data.blood_type || null,
-        allergies: data.allergies.map((a) => a.value),
-        conditions: data.conditions.map((c) => c.value),
-        status: data.status,
-      },
-      {
-        onSuccess: handleClose,
-        onError: (err) => setDialogError(err.message),
-      }
-    );
+    onSubmitProp({
+      first_name: data.first_name,
+      last_name: data.last_name,
+      date_of_birth: data.date_of_birth,
+      last_visit: data.last_visit || null,
+      blood_type: data.blood_type || null,
+      allergies: data.allergies.map((a) => a.value),
+      conditions: data.conditions.map((c) => c.value),
+      status: data.status,
+    });
   };
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <DialogTitle>Edit Patient</DialogTitle>
+        <DialogTitle>{isAddMode ? 'Add Patient' : 'Edit Patient'}</DialogTitle>
         <DialogContent>
           <Stack spacing={3} sx={{ minWidth: 400, pt: 1 }}>
             <Stack spacing={2}>
@@ -375,12 +369,12 @@ export const EditPatientDialog = ({
           <Button
             type="submit"
             variant="contained"
-            disabled={isLoading || isUpdating}
+            disabled={isSubmitting}
           >
             Save
           </Button>
         </DialogActions>
-        {dialogError && <ErrorMessage message={dialogError} />}
+        {error && <ErrorMessage message={error} />}
       </form>
     </Dialog>
   );
