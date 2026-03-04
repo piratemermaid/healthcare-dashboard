@@ -1,6 +1,14 @@
+from pathlib import Path
+
+from dotenv import load_dotenv
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+# Load .env from project root (parent of server/) - only when file exists
+_env_path = Path(__file__).resolve().parent.parent.parent / ".env"
+if _env_path.exists():
+    load_dotenv(_env_path)
 
 from app.db.database import get_db, init_db
 from app.db.seed import seed_patients
