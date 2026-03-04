@@ -1,17 +1,10 @@
-import { createRootRoute, Outlet } from '@tanstack/react-router';
+import { createRootRoute } from '@tanstack/react-router';
 
-import { SideBarLayout } from '~/components';
 import { NotFoundPage } from '~/pages';
+
+import { RootLayout } from './RootLayout';
 
 export const rootRoute = createRootRoute({
   component: RootLayout,
   notFoundComponent: NotFoundPage,
 });
-
-function RootLayout() {
-  return (
-    <SideBarLayout>
-      <Outlet />
-    </SideBarLayout>
-  );
-}
