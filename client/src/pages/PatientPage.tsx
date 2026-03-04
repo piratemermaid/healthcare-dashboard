@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Stack, Typography } from '@mui/material';
 import { useParams } from '@tanstack/react-router';
+import { IconButton, Stack, Typography } from '@mui/material';
+import { Edit as EditIcon } from '@mui/icons-material';
 
 import {
   ErrorMessage,
@@ -9,6 +10,7 @@ import {
   PatientNoteList,
   AddNoteButton,
   AddNoteDialog,
+  EditPatientDialog,
   Summary,
 } from '~/components';
 import {
@@ -21,6 +23,7 @@ import { formatDate, getFullName } from '~/utils';
 
 export function PatientPage() {
   const [addNoteDialogOpen, setAddNoteDialogOpen] = useState(false);
+  const [editPatientDialogOpen, setEditPatientDialogOpen] = useState(false);
 
   const { id } = useParams({ from: '/patients/$id' });
 
@@ -79,37 +82,48 @@ export function PatientPage() {
   }
 
   return (
-    <Stack spacing={2}>
-      <Typography variant="h5">
-        {getFullName(patient.first_name, patient.last_name)}
-      </Typography>
-      <Stack>
-        <Typography variant="body1">
-          Birthdate: {formatDate(patient.date_of_birth, 'MM/dd/yyyy') ?? 'N/A'}
-        </Typography>
-        <Typography variant="body1">
-          Last visit: {formatDate(patient.last_visit, 'MM/dd/yyyy') ?? 'N/A'}
-        </Typography>
-        <Typography variant="body1">
-          Status: <PatientStatusChip status={patient.status} />
-        </Typography>
-      </Stack>
-
-      <Stack spacing={1}>
-        <Typography variant="h6">Summary</Typography>
-        <Summary summary={summary} />
-      </Stack>
-
-      <Stack spacing={1}>
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          <Typography variant="h6">Notes</Typography>
-          <AddNoteButton onClick={() => setAddNoteDialogOpen(true)} />
+    <>
+      <Stack spacing={2}>
+        <Stack direction="row" spacing={1}>
+          <Typography variant="h5">
+            {getFullName(patient.first_name, patient.last_name)}
+          </Typography>
+          <IconButton
+            onClick={() => setEditPatientDialogOpen(true)}
+            size="small"
+          >
+            <EditIcon />
+          </IconButton>
         </Stack>
-        <PatientNoteList patientId={id} notes={notes?.items ?? []} />
+        <Stack>
+          <Typography variant="body1">
+            Birthdate:{' '}
+            {formatDate(patient.date_of_birth, 'MM/dd/yyyy') ?? 'N/A'}
+          </Typography>
+          <Typography variant="body1">
+            Last visit: {formatDate(patient.last_visit, 'MM/dd/yyyy') ?? 'N/A'}
+          </Typography>
+          <Typography variant="body1">
+            Status: <PatientStatusChip status={patient.status} />
+          </Typography>
+        </Stack>
+
+        <Stack spacing={1}>
+          <Typography variant="h6">Summary</Typography>
+          <Summary summary={summary} />
+        </Stack>
+
+        <Stack spacing={1}>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Typography variant="h6">Notes</Typography>
+            <AddNoteButton onClick={() => setAddNoteDialogOpen(true)} />
+          </Stack>
+          <PatientNoteList patientId={id} notes={notes?.items ?? []} />
+        </Stack>
       </Stack>
 
       <AddNoteDialog
@@ -119,6 +133,14 @@ export function PatientPage() {
         isLoading={isAddingNote}
         error={addNoteError?.message ?? 'Failed to add note'}
       />
-    </Stack>
+
+      <EditPatientDialog
+        open={editPatientDialogOpen}
+        onClose={() => setEditPatientDialogOpen(false)}
+        patient={patient}
+        isLoading={false}
+        error=""
+      />
+    </>
   );
 }

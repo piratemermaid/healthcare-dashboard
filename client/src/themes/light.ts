@@ -72,6 +72,9 @@ export const lightTheme = createTheme({
       fontSize: '1.2rem',
       color: palette.text.secondary,
     },
+    subtitle1: {
+      fontWeight: 600,
+    },
   },
   shape: {
     borderRadius: 4,
