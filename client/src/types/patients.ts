@@ -8,6 +8,9 @@ export interface Patient {
   age: number;
   last_visit: Date | null;
   status: PatientStatus;
+  blood_type?: string | null;
+  allergies?: string[];
+  conditions?: string[];
 }
 
 export interface PatientListResponse {

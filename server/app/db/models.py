@@ -1,5 +1,6 @@
 from datetime import date, datetime
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Date, Text
+from sqlalchemy.dialects.postgresql import JSONB
 
 from sqlalchemy.orm import declarative_base, relationship
 
@@ -15,6 +16,9 @@ class Patient(Base):
     date_of_birth = Column(Date, nullable=False)
     last_visit = Column(Date, nullable=True)
     status = Column(String(50), default="active")
+    blood_type = Column(String(10), nullable=True)
+    allergies = Column(JSONB, nullable=True, default=list)  # ["allergy1", "allergy2"]
+    conditions = Column(JSONB, nullable=True, default=list)  # ["condition1", "condition2"]
     notes = relationship("PatientNote", back_populates="patient")
 
 

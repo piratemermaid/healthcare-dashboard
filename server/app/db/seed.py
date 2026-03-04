@@ -14,6 +14,9 @@ LAST_NAMES = [
     "Rodriguez", "Martinez", "Hernandez", "Lopez", "Gonzalez", "Wilson", "Anderson", "Thomas",
 ]
 STATUSES = ["active", "inactive", "pending", "discharged"]
+BLOOD_TYPES = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-", None]
+SAMPLE_ALLERGIES = [["Penicillin"], ["Latex", "Peanuts"], ["Sulfa"], [], ["Aspirin"]]
+SAMPLE_CONDITIONS = [["Hypertension"], ["Diabetes", "Asthma"], ["COPD"], [], ["Arthritis"]]
 
 
 def seed_patients(db: Session, count: int = 20):
@@ -33,6 +36,9 @@ def seed_patients(db: Session, count: int = 20):
             date_of_birth=dob,
             last_visit=last_visit,
             status=choice(STATUSES),
+            blood_type=choice(BLOOD_TYPES),
+            allergies=choice(SAMPLE_ALLERGIES),
+            conditions=choice(SAMPLE_CONDITIONS),
         )
         patients.append(patient)
 

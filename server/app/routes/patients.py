@@ -50,13 +50,7 @@ def get_patient_summary(
         (n.content, n.created_at.strftime("%Y-%m-%d %H:%M"))
         for n in notes
     ]
-    return build_patient_summary(
-        first_name=patient.first_name,
-        last_name=patient.last_name,
-        date_of_birth=patient.date_of_birth,
-        status=patient.status,
-        notes=note_tuples,
-    )
+    return build_patient_summary(patient=patient, notes=note_tuples)
 
 
 @router.get("/{id}", response_model=PatientResponse)
@@ -84,7 +78,7 @@ def create_patient(
 
 
 
-@router.put("/{id}")
+@router.put("/{id}", response_model=PatientResponse)
 def update_patient(
     id: int,
     patient: PatientUpdate,
@@ -93,10 +87,12 @@ def update_patient(
     db_patient = db.query(Patient).filter(Patient.id == id).first()
     if db_patient is None:
         raise HTTPException(status_code=404, detail="Patient not found")
-    
+
     for field, value in patient.model_dump(exclude_unset=True).items():
         setattr(db_patient, field, value)
     db.commit()
+    db.refresh(db_patient)
+    return db_patient
 
 
 @router.delete("/{id}")

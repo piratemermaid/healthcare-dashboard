@@ -17,6 +17,7 @@ import {
 
 import { AddableTextFieldList, ErrorMessage } from '~/components';
 import { STATUS_OPTIONS } from '~/constants';
+import { useUpdatePatient } from '~/hooks';
 import type { Patient, PatientStatus } from '~/types';
 
 type EditPatientFormValues = {
@@ -32,7 +33,7 @@ type EditPatientFormValues = {
   address2: string;
   city: string;
   state: string;
-  zip: string;
+  zip_code: string;
   allergies: { value: string }[];
   conditions: { value: string }[];
   blood_type: string;
@@ -60,7 +61,7 @@ const defaultFormValues: EditPatientFormValues = {
   address2: '',
   city: '',
   state: '',
-  zip: '',
+  zip_code: '',
   allergies: [],
   conditions: [],
   blood_type: '',
@@ -80,6 +81,10 @@ export const EditPatientDialog = ({
 
   const [dialogError, setDialogError] = useState(error ?? '');
 
+  const { mutate: updatePatient, isPending: isUpdating } = useUpdatePatient(
+    patient?.id?.toString() ?? ''
+  );
+
   const handleClose = () => {
     setDialogError(error ?? '');
     reset(defaultFormValues);
@@ -96,17 +101,41 @@ export const EditPatientDialog = ({
         last_visit: patient.last_visit
           ? String(patient.last_visit).slice(0, 10)
           : '',
+        home_phone: '',
+        cell_phone: '',
+        work_phone: '',
+        email: '',
+        address1: '',
+        address2: '',
+        city: '',
+        state: '',
+        zip_code: '',
+        blood_type: patient.blood_type ?? '',
+        allergies: (patient.allergies ?? []).map((v) => ({ value: v })),
+        conditions: (patient.conditions ?? []).map((v) => ({ value: v })),
         status: patient.status,
-        // Placeholders for fields not yet on backend
-        allergies: [],
-        conditions: [],
-        blood_type: '',
       });
     }
   }, [open, patient, reset]);
 
   const onSubmit = (data: EditPatientFormValues) => {
-    console.log('save new patient data:', data);
+    if (!patient?.id) return;
+    updatePatient(
+      {
+        first_name: data.first_name,
+        last_name: data.last_name,
+        date_of_birth: data.date_of_birth,
+        last_visit: data.last_visit || null,
+        blood_type: data.blood_type || null,
+        allergies: data.allergies.map((a) => a.value),
+        conditions: data.conditions.map((c) => c.value),
+        status: data.status,
+      },
+      {
+        onSuccess: handleClose,
+        onError: (err) => setDialogError(err.message),
+      }
+    );
   };
 
   return (
@@ -223,7 +252,7 @@ export const EditPatientDialog = ({
                   )}
                 />
                 <Controller
-                  name="zip"
+                  name="zip_code"
                   control={control}
                   render={({ field }) => (
                     <TextField {...field} label="ZIP" fullWidth />
@@ -280,7 +309,11 @@ export const EditPatientDialog = ({
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit" variant="contained" disabled={isLoading}>
+          <Button
+            type="submit"
+            variant="contained"
+            disabled={isLoading || isUpdating}
+          >
             Save
           </Button>
         </DialogActions>

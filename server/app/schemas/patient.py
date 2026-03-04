@@ -9,6 +9,9 @@ class PatientBase(BaseModel):
     date_of_birth: date
     last_visit: date | None = None
     status: str = "active"
+    blood_type: str | None = None
+    allergies: list[str] = []
+    conditions: list[str] = []
 
 
 class PatientCreate(PatientBase):
@@ -21,6 +24,9 @@ class PatientUpdate(BaseModel):
     date_of_birth: date | None = None
     last_visit: date | None = None
     status: str | None = None
+    blood_type: str | None = None
+    allergies: list[str] | None = None
+    conditions: list[str] | None = None
 
 
 class PatientResponse(PatientBase):
@@ -64,7 +70,19 @@ class PatientNoteListResponse(BaseModel):
     items: list[PatientNote]
 
 
+class PatientSummaryIdentifiers(BaseModel):
+    name: str
+    age: int
+    blood_type: str | None
+
+
+class PatientSummaryClinical(BaseModel):
+    conditions: list[str]
+    allergies: list[str]
+    status: str
+
+
 class PatientSummaryResponse(BaseModel):
-    identifiers: dict  # name, age, blood_type (when available)
-    clinical: dict  # conditions, allergies (when available)
+    identifiers: PatientSummaryIdentifiers
+    clinical: PatientSummaryClinical
     narrative: str

@@ -1,6 +1,11 @@
 from datetime import date
 
-from app.schemas.patient import PatientSummaryResponse
+from app.db.models import Patient
+from app.schemas.patient import (
+    PatientSummaryClinical,
+    PatientSummaryIdentifiers,
+    PatientSummaryResponse,
+)
 
 
 def _calculate_age(date_of_birth: date) -> int:
@@ -12,33 +17,29 @@ def _calculate_age(date_of_birth: date) -> int:
 
 
 def build_patient_summary(
-    first_name: str,
-    last_name: str,
-    date_of_birth: date,
-    status: str,
+    patient: Patient,
     notes: list[tuple[str, str]],  # (content, created_at_str)
 ) -> PatientSummaryResponse:
-    name = f"{first_name} {last_name}"
-    age = _calculate_age(date_of_birth)
+    name = f"{patient.first_name} {patient.last_name}"
+    age = _calculate_age(patient.date_of_birth)
 
-    identifiers = {
-        "name": name,
-        "age": age,
-        "blood_type": None,  # placeholder for future schema
-    }
+    identifiers = PatientSummaryIdentifiers(
+        name=name,
+        age=age,
+        blood_type=patient.blood_type,
+    )
 
-    clinical = {
-        "conditions": [],  # placeholder for future schema
-        "allergies": [],  # placeholder for future schema
-        "status": status,
-    }
+    clinical = PatientSummaryClinical(
+        conditions=patient.conditions or [],
+        allergies=patient.allergies or [],
+        status=patient.status,
+    )
 
     narrative_parts = [f"[{dt}] {content}" for content, dt in notes]
     narrative = " ".join(narrative_parts) if narrative_parts else "No notes on file."
 
-
     return PatientSummaryResponse(
         identifiers=identifiers,
-        narrative=narrative,
         clinical=clinical,
+        narrative=narrative,
     )
