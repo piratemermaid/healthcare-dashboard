@@ -13,8 +13,11 @@ export const NavLink = ({ path, label }: NavLinkProps) => {
     <Link to={path}>
       <Button
         variant="text"
-        color="inherit"
-        sx={{ color: isActive ? 'primary.contrastText' : 'inherit' }}
+        sx={{
+          color: 'primary.contrastText',
+          outlineStyle: isActive ? 'solid' : 'none',
+          outlineWidth: 0.2,
+        }}
       >
         {label}
       </Button>
