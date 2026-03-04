@@ -19,7 +19,7 @@
 
 <b>Patient table with filtering & sorting:</b> MUI X Data Grid - has all functionality needed for quick development
 
-<b>:</b>
+<b>Form library:</b> react-hook-form
 
 ## Further Development
 
