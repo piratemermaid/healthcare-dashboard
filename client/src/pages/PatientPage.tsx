@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 import { useParams } from '@tanstack/react-router';
 
@@ -6,11 +7,17 @@ import {
   Loader,
   PatientStatusChip,
   PatientNoteList,
+  AddNoteButton,
+  AddNoteDialog,
 } from '~/components';
 import { usePatient, usePatientNotes } from '~/hooks';
 import { formatDate, getFullName } from '~/utils';
+import type { PatientNote } from '~/types';
+import { useAddPatientNote } from '~/hooks/patients/useAddPatientNote';
 
 export function PatientPage() {
+  const [addNoteDialogOpen, setAddNoteDialogOpen] = useState(false);
+
   const { id } = useParams({ from: '/patients/$id' });
 
   const {
@@ -23,6 +30,23 @@ export function PatientPage() {
     isLoading: isNotesLoading,
     error: notesError,
   } = usePatientNotes(id);
+
+  const {
+    mutate: addNote,
+    isPending: isAddingNote,
+    error: addNoteError,
+  } = useAddPatientNote(id);
+
+  const handleAddNote = (content: string) => {
+    addNote(
+      { content },
+      {
+        onSuccess: () => {
+          setAddNoteDialogOpen(false);
+        },
+      }
+    );
+  };
 
   if (patientError || notesError) {
     return (
@@ -65,9 +89,24 @@ export function PatientPage() {
       </Stack>
 
       <Stack spacing={1}>
-        <Typography variant="h6">Notes</Typography>
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Typography variant="h6">Notes</Typography>
+          <AddNoteButton onClick={() => setAddNoteDialogOpen(true)} />
+        </Stack>
         <PatientNoteList notes={notes?.items ?? []} />
       </Stack>
+
+      <AddNoteDialog
+        open={addNoteDialogOpen}
+        onClose={() => setAddNoteDialogOpen(false)}
+        onAddNote={handleAddNote}
+        isLoading={isAddingNote}
+        error={addNoteError?.message ?? 'Failed to add note'}
+      />
     </Stack>
   );
 }

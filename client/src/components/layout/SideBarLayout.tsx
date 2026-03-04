@@ -19,7 +19,7 @@ import {
   MoveToInbox as InboxIcon,
 } from '@mui/icons-material';
 
-import { NavBar } from '.';
+import { NavBar } from '~/components';
 
 const drawerWidth = 240;
 

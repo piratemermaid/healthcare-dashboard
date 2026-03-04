@@ -1,7 +1,7 @@
 import { AppBar, IconButton, Stack, Toolbar, Typography } from '@mui/material';
 import { Menu as MenuIcon } from '@mui/icons-material';
 
-import { NavLink } from '.';
+import { NavLink } from '~/components';
 import { NAV_ROUTES } from '~/routes/routes';
 
 type NavBarProps = {

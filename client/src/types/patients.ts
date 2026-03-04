@@ -24,3 +24,7 @@ export interface PatientNote {
 export interface PatientNoteListResponse {
   items: PatientNote[];
 }
+
+export interface PatientNoteCreate {
+  content: string;
+}

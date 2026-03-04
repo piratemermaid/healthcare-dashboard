@@ -5,7 +5,7 @@ import {
   type GridRowParams,
 } from '@mui/x-data-grid';
 
-import { PatientStatusChip } from '.';
+import { PatientStatusChip } from '~/components';
 import { formatDate, getFullName } from '~/utils';
 import type { Patient, PatientStatus, PaginationModel } from '~/types';
 
