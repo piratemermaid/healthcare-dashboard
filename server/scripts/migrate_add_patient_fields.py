@@ -17,11 +17,11 @@ from app.db.database import engine
 
 
 def migrate():
-        columns = [
-            ("blood_type", "VARCHAR(10)"),
-            ("allergies", "JSONB DEFAULT '[]'::jsonb"),
-            ("conditions", "JSONB DEFAULT '[]'::jsonb"),
-        ]
+    columns = [
+        ("blood_type", "VARCHAR(10)"),
+        ("allergies", "JSONB DEFAULT '[]'::jsonb"),
+        ("conditions", "JSONB DEFAULT '[]'::jsonb"),
+    ]
     with engine.connect() as conn:
         for col_name, col_type in columns:
             try:
