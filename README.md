@@ -71,6 +71,8 @@ Copy `.env.example` to `.env` in the `client` directory. The frontend needs:
 
 For local backend (no Docker), optionally set `DATABASE_URL` in the server environment (default: `postgresql://postgres:postgres@localhost:5432/healthcare`).
 
+For **LLM-generated summaries** (Groq): create a `.env` in the project root (same directory as `docker-compose.yml`) with `GROQ_API_KEY=gsk_...`. Get a free key at [console.groq.com](https://console.groq.com). The backend loads it via python-dotenv (local) or Docker Compose (container). Without it, summaries use a template-based fallback.
+
 ## API
 
 - Health check: `GET http://localhost:8000/health`
