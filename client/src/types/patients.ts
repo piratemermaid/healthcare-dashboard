@@ -28,3 +28,17 @@ export interface PatientNoteListResponse {
 export interface PatientNoteCreate {
   content: string;
 }
+
+export interface PatientSummary {
+  identifiers: {
+    name: string;
+    age: number;
+    blood_type: string | null;
+  };
+  clinical: {
+    conditions: string[];
+    allergies: string[];
+    status: PatientStatus;
+  };
+  narrative: string;
+}

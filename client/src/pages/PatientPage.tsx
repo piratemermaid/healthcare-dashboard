@@ -9,8 +9,14 @@ import {
   PatientNoteList,
   AddNoteButton,
   AddNoteDialog,
+  Summary,
 } from '~/components';
-import { usePatient, usePatientNotes, useAddPatientNote } from '~/hooks';
+import {
+  usePatient,
+  usePatientNotes,
+  useAddPatientNote,
+  usePatientSummary,
+} from '~/hooks';
 import { formatDate, getFullName } from '~/utils';
 
 export function PatientPage() {
@@ -28,6 +34,11 @@ export function PatientPage() {
     isLoading: isNotesLoading,
     error: notesError,
   } = usePatientNotes(id);
+  const {
+    data: summary,
+    isLoading: isSummaryLoading,
+    error: summaryError,
+  } = usePatientSummary(id);
 
   const {
     mutate: addNote,
@@ -46,19 +57,20 @@ export function PatientPage() {
     );
   };
 
-  if (patientError || notesError) {
+  if (patientError || notesError || summaryError) {
     return (
       <ErrorMessage
         message={
           patientError?.message ??
           notesError?.message ??
+          summaryError?.message ??
           'Oopsie, something went wrong!'
         }
       />
     );
   }
 
-  if (isPatientLoading || isNotesLoading) {
+  if (isPatientLoading || isNotesLoading || isSummaryLoading) {
     return <Loader />;
   }
 
@@ -72,9 +84,11 @@ export function PatientPage() {
         {getFullName(patient.first_name, patient.last_name)}
       </Typography>
       <Stack>
-        <Typography variant="body1">Age: {patient.age}</Typography>
         <Typography variant="body1">
-          Last visit: {formatDate(patient.last_visit, 'MM/dd/yyyy')}
+          Birthdate: {formatDate(patient.date_of_birth, 'MM/dd/yyyy') ?? 'N/A'}
+        </Typography>
+        <Typography variant="body1">
+          Last visit: {formatDate(patient.last_visit, 'MM/dd/yyyy') ?? 'N/A'}
         </Typography>
         <Typography variant="body1">
           Status: <PatientStatusChip status={patient.status} />
@@ -83,7 +97,7 @@ export function PatientPage() {
 
       <Stack spacing={1}>
         <Typography variant="h6">Summary</Typography>
-        <Typography>summary</Typography>
+        <Summary summary={summary} />
       </Stack>
 
       <Stack spacing={1}>
