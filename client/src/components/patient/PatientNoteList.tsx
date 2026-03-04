@@ -1,16 +1,7 @@
-import {
-  Card,
-  CardContent,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 
+import { Note } from '~/components';
 import type { PatientNote } from '~/types';
-import { formatDate } from '~/utils';
 
 type PatientNoteListProps = {
   notes: PatientNote[];
@@ -27,14 +18,7 @@ export const PatientNoteList = ({ notes }: PatientNoteListProps) => {
     <Grid container spacing={1}>
       {notes?.map((note) => (
         <Grid key={note.id} size={{ xs: 12, md: 6, lg: 4 }}>
-          <Card>
-            <CardContent>
-              <Typography variant="body1">{note.content}</Typography>
-              <Typography variant="caption">
-                {formatDate(note.created_at)}
-              </Typography>
-            </CardContent>
-          </Card>
+          <Note note={note} />
         </Grid>
       ))}
     </Grid>
