@@ -95,7 +95,7 @@ export function PatientPage() {
           <Typography variant="h6">Notes</Typography>
           <AddNoteButton onClick={() => setAddNoteDialogOpen(true)} />
         </Stack>
-        <PatientNoteList notes={notes?.items ?? []} />
+        <PatientNoteList patientId={id} notes={notes?.items ?? []} />
       </Stack>
 
       <AddNoteDialog

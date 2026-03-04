@@ -9,18 +9,22 @@ import {
 import { Delete as DeleteIcon } from '@mui/icons-material';
 
 import { ConfirmationDialog } from '~/components';
+import { useDeletePatientNote } from '~/hooks';
 import { formatDate } from '~/utils';
 import type { PatientNote } from '~/types';
 
 type NoteProps = {
   note: PatientNote;
+  patientId: string;
 };
 
-export const Note = ({ note }: NoteProps) => {
+export const Note = ({ note, patientId }: NoteProps) => {
   const [confirmOpen, setConfirmOpen] = useState(false);
 
+  const { mutate: deleteNote } = useDeletePatientNote(patientId);
+
   const handleDeleteNote = () => {
-    alert('delete!');
+    deleteNote(note.id);
   };
 
   return (
