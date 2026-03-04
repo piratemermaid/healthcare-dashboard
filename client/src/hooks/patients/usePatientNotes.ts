@@ -1,18 +1,20 @@
 import { useQuery, type UseQueryResult } from '@tanstack/react-query';
 
 import { QUERY_KEYS } from '~/constants';
-import type { Patient } from '~/types';
+import type { PatientNoteListResponse } from '~/types';
 
-export const usePatient = (id: string): UseQueryResult<Patient> => {
+export const usePatientNotes = (
+  id: string
+): UseQueryResult<PatientNoteListResponse> => {
   return useQuery({
-    queryKey: [QUERY_KEYS.PATIENT, id],
-    queryFn: () => fetchPatient(id),
+    queryKey: [QUERY_KEYS.PATIENT_NOTES, id],
+    queryFn: () => fetchPatientNotes(id),
   });
 };
 
-async function fetchPatient(id: string): Promise<Patient> {
+async function fetchPatientNotes(id: string): Promise<PatientNoteListResponse> {
   const response = await fetch(
-    `${import.meta.env.VITE_API_URL}/patients/${id}`
+    `${import.meta.env.VITE_API_URL}/patients/${id}/notes`
   );
 
   if (!response.ok) {
@@ -20,7 +22,7 @@ async function fetchPatient(id: string): Promise<Patient> {
     const message =
       (body as { detail?: string }).detail ??
       response.statusText ??
-      'Failed to fetch patient';
+      'Failed to fetch patient notes';
     throw new Error(message);
   }
 

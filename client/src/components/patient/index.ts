@@ -1,2 +1,2 @@
-export * from './PatientTable';
 export * from './PatientStatusChip';
+export * from './PatientNoteList';

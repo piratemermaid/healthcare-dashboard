@@ -1,3 +1,4 @@
 export * from './common';
 export * from './layout';
-export * from './patientList';
+export * from './patient';
+export * from './PatientTable';

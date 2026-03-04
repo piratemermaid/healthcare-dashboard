@@ -14,3 +14,13 @@ export interface PatientListResponse {
   items: Patient[];
   total: number;
 }
+
+export interface PatientNote {
+  id: number;
+  content: string;
+  created_at: string;
+}
+
+export interface PatientNoteListResponse {
+  items: PatientNote[];
+}

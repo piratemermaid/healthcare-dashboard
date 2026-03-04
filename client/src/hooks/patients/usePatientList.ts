@@ -1,10 +1,20 @@
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import {
+  keepPreviousData,
+  useQuery,
+  type UseQueryResult,
+} from '@tanstack/react-query';
+
+import { QUERY_KEYS } from '~/constants';
+import type { PatientListResponse } from '~/types';
 
 const API = import.meta.env.VITE_API_URL;
 
-export const usePatientList = (page: number, pageSize: number) => {
+export const usePatientList = (
+  page: number,
+  pageSize: number
+): UseQueryResult<PatientListResponse> => {
   return useQuery({
-    queryKey: ['patients', page, pageSize],
+    queryKey: [QUERY_KEYS.PATIENTS, page, pageSize],
     queryFn: async () => {
       const res = await fetch(
         `${API}/patients?page=${page + 1}&page_size=${pageSize}`

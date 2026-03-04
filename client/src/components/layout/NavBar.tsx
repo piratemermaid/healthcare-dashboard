@@ -29,7 +29,16 @@ export const NavBar = ({ onMenuClick }: NavBarProps) => {
           justifyContent="space-between"
           width="100%"
         >
-          <Typography variant="h6">Healthcare Dashboard</Typography>
+          <Typography
+            variant="h5"
+            component="h1"
+            sx={{
+              fontWeight: 'bold',
+              letterSpacing: 1,
+            }}
+          >
+            Healthcare Dashboard
+          </Typography>
           <Stack direction="row" spacing={2}>
             {NAV_ROUTES.map((route) => (
               <NavLink key={route.path} path={route.path} label={route.label} />

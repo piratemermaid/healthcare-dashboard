@@ -4,7 +4,7 @@ import { createTheme } from '@mui/material/styles';
  * Healthcare dashboard theme
  * Clean, calming, trustworthy palette with high-contrast for accessibility
  */
-const lightPalette = {
+const palette = {
   primary: {
     main: '#1976d2',
     light: '#42a5f5',
@@ -61,12 +61,17 @@ const lightPalette = {
 export const lightTheme = createTheme({
   palette: {
     mode: 'light',
-    ...lightPalette,
+    ...palette,
   },
   typography: {
     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
     h5: { fontWeight: 'medium', letterSpacing: 0.5 },
-    h6: { fontWeight: 'medium', letterSpacing: 1 },
+    h6: {
+      textTransform: 'uppercase',
+      fontWeight: 300,
+      fontSize: '1.2rem',
+      color: palette.text.secondary,
+    },
   },
   shape: {
     borderRadius: 4,
